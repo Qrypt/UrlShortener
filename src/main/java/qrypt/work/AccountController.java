@@ -1,12 +1,13 @@
 package qrypt.work;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class AccountController {
     private AccountRepository accountRepository;
 
@@ -16,17 +17,17 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public List<Account> getAll() {
+    public @ResponseBody List<Account> getAll() {
         return accountRepository.findAll();
     }
 
     @RequestMapping(value = "/finduser/{username}", method = RequestMethod.GET)
-    public Account findByUserName(@PathVariable("username") String username) {
+    public @ResponseBody Account findByUserName(@PathVariable("username") String username) {
         return accountRepository.findByUsername(username);
     }
 
     @RequestMapping(value = ("/create"), method = RequestMethod.POST)
-    public List<Account> create(@RequestBody Account account) {
+    public @ResponseBody List<Account> create(@RequestBody Account account) {
         accountRepository.save(account);
         return accountRepository.findAll();
     }
