@@ -1,16 +1,35 @@
 package qrypt.work;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Table(name="url")
-public class MyUrl {
+@Table(name = "url")
+public class MyUrl implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String original;
     private String shortened;
+
+    public MyUrl() {
+
+    }
+
+    public MyUrl(String original, String shortened) {
+        this.original = original;
+        this.shortened = shortened;
+    }
+
+    @Override
+    public String toString() {
+        return "MyUrl{" +
+                "id=" + id +
+                ", original='" + original + '\'' +
+                ", shortened='" + shortened + '\'' +
+                '}';
+    }
 
     public Long getId() {
         return id;
