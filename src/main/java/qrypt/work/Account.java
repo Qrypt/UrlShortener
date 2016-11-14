@@ -14,6 +14,15 @@ public class Account implements Serializable{
     private String username;
     private String password;
 
+    public Account() {
+
+    }
+
+    public Account(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", username=" + username + ", password=" + password;

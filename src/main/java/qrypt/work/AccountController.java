@@ -1,21 +1,43 @@
 package qrypt.work;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller(value="account")
+import java.util.List;
+
+@RestController
 public class AccountController {
+    private AccountRepository accountRepository;
 
-    @GetMapping("/login")
+    @Autowired
+    public AccountController(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public List<Account> getAll() {
+        return accountRepository.findAll();
+    }
+
+    @RequestMapping(value = "/finduser/{username}", method = RequestMethod.GET)
+    public Account findByUserName(@PathVariable("username") String username) {
+        return accountRepository.findByUsername(username);
+    }
+
+    @RequestMapping(value = ("/create"), method = RequestMethod.POST)
+    public List<Account> create(@RequestBody Account account) {
+        accountRepository.save(account);
+        return accountRepository.findAll();
+    }
+
+    @GetMapping("/")
     public String loginForm(Model model) {
-        model.addAttribute("login", new Account());
+        model.addAttribute("account", new Account());
         return "login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/")
     public String loginSubmit(@ModelAttribute Account account) {
 
         if(account.getUsername().equals("Fredrik") && account.getPassword().equals("hej")) {
