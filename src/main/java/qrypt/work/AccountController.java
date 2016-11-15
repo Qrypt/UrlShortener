@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/account")
 public class AccountController {
     private AccountRepository accountRepository;
 
@@ -26,26 +27,29 @@ public class AccountController {
         return accountRepository.findByUsername(username);
     }
 
+    /*
+    varför funkar det inte att köra 'return "myurl"' bara?
+     */
     @RequestMapping(value = ("/create"), method = RequestMethod.POST)
-    public @ResponseBody List<Account> create(@RequestBody Account account) {
+    public String create(Account account) {
         accountRepository.save(account);
-        return accountRepository.findAll();
+        return "redirect:/myurl";
     }
 
-    @GetMapping("/")
-    public String loginForm(Model model) {
-        model.addAttribute("account", new Account());
-        return "login";
-    }
-
-    @PostMapping("/")
-    public String loginSubmit(@ModelAttribute Account account) {
-
-        if(account.getUsername().equals("Fredrik") && account.getPassword().equals("hej")) {
-            return "urlshortener";
-        }
-
-        return "loginFail";
-    }
+//    @GetMapping("/")
+//    public String loginForm(Model model) {
+//        model.addAttribute("account", new Account());
+//        return "login";
+//    }
+//
+//    @PostMapping("/")
+//    public String loginSubmit(@ModelAttribute Account account) {
+//
+//        if(account.getUsername().equals("Fredrik") && account.getPassword().equals("hej")) {
+//            return "urlshortener";
+//        }
+//
+//        return "loginFail";
+//    }
 
 }

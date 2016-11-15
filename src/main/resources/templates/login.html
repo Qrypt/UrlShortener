@@ -1,17 +1,21 @@
-<!DOCTYPE HTML>
-<!--suppress ThymeleafVariablesResolveInspection -->
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>Getting data from login</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Spring Security Example </title>
 </head>
 <body>
-<h1>Login</h1>
-<!--/*@thymesVar id="account" type="qrypt.work.Account"*/-->
-<form action="#" th:action="@{/}" th:object="${account}" method="post">
-    <p>username: <input type="text" th:field="*{username}" /></p>
-    <p>password: <input type="password" th:field="*{password}" /></p>
-    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+<div th:if="${param.error}">
+    Invalid username and password.
+</div>
+<!--/*@thymesVar id="param" type="qrypt.work"*/-->
+<div th:if="${param.logout}">
+    You have been logged out.
+</div>
+<form th:action="@{/login}" method="post">
+    <div><label> User Name : <input type="text" name="username"/> </label></div>
+    <div><label> Password: <input type="password" name="password"/> </label></div>
+    <div><input type="submit" value="Sign In"/></div>
 </form>
 </body>
 </html>

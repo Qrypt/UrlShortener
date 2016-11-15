@@ -45,6 +45,16 @@
 			<scope>test</scope>
 		</dependency>
 
+
+		<!-- Spring todo
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		-->
+
+
+
 		<!-- Google api, fuckar upp tomcat... -->
 		<!--
 

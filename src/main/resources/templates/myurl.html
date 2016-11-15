@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Blog</title>
+</head>
+
+<body>
+<h1>Shorten your URL</h1>
+<!--/*@thymesVar id="urlshortener" type="qrypt.work.MyUrl"*/-->
+<form action="#" th:action="@{/myurl/create}" th:object="${myurl}" method="post">
+    <p>username: <input type="text" th:field="*{original}" /></p>
+    <p><input type="submit" value="Get shortened url" /> <input type="reset" value="Reset" /></p>
+</form>
+
+Shortened url:
+
+<div th:if="${not #lists.isEmpty(myurllist)}">
+    <h2>Url list</h2>
+    <table class="table table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Original</th>
+            <th>Shortened</th>
+        </tr>
+        <tr th:each="myurllist : ${myurllist}">
+            <td th:text="${myurllist.id}"></td>
+            <td th:text="${myurllist.original}"></td>
+            <td th:text="${myurllist.shortened}"></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+
+</html>
