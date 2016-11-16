@@ -11,7 +11,7 @@
 <h1>Shorten your URL</h1>
 <!--/*@thymesVar id="urlshortener" type="qrypt.work.MyUrl"*/-->
 <form action="#" th:action="@{/myurl/create}" th:object="${myurl}" method="post">
-    <p>username: <input type="text" th:field="*{original}" /></p>
+    <p>Url: <input type="text" th:field="*{original}" /></p>
     <p><input type="submit" value="Get shortened url" /> <input type="reset" value="Reset" /></p>
 </form>
 

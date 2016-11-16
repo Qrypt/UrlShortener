@@ -53,10 +53,15 @@
 		</dependency>
 		-->
 
-
+		<!-- JSON -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20160810</version>
+		</dependency>
 
 		<!-- Google api, fuckar upp tomcat... -->
-		<!--
+
 
 		<dependency>
 			<groupId>com.google.apis</groupId>
@@ -79,7 +84,7 @@
 			<version>1.19.0</version>
 		</dependency>
 
-		-->
+
 
 		<!-- DB -->
 		<dependency>
