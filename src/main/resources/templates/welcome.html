@@ -9,6 +9,13 @@
 
 <body>
 <h1>WELCOME</h1>
+
+<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+
+<!--
 <div th:fragment="logout" class="logout" sec:authorize="isAuthenticated()">
     Logged in user: <span sec:authentication="name"></span> |
     Roles: <span sec:authentication="principal.authorities"></span>
@@ -23,7 +30,7 @@
 <ul>
     <li>Go to the <a href="/user/index" th:href="@{/user/index}">secured pages</a></li>
 </ul>
-
+-->
 </body>
 
 </html>

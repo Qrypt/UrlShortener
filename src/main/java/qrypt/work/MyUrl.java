@@ -12,6 +12,7 @@ public class MyUrl implements Serializable {
 
     private String original;
     private String shortened;
+    private String accountUsername;
 
     public MyUrl() {
 
@@ -54,4 +55,13 @@ public class MyUrl implements Serializable {
     public void setShortened(String shortened) {
         this.shortened = shortened;
     }
+
+    public String getAccountUsername() {
+        return accountUsername;
+    }
+
+    public void setAccountUsername(String accountUsername) {
+        this.accountUsername = accountUsername;
+    }
+
 }

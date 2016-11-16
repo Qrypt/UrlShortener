@@ -27,29 +27,9 @@ public class AccountController {
         return accountRepository.findByUsername(username);
     }
 
-    /*
-    varför funkar det inte att köra 'return "myurl"' bara?
-     */
     @RequestMapping(value = ("/create"), method = RequestMethod.POST)
     public String create(Account account) {
         accountRepository.save(account);
-        return "redirect:/myurl";
+        return "home";
     }
-
-//    @GetMapping("/")
-//    public String loginForm(Model model) {
-//        model.addAttribute("account", new Account());
-//        return "login";
-//    }
-//
-//    @PostMapping("/")
-//    public String loginSubmit(@ModelAttribute Account account) {
-//
-//        if(account.getUsername().equals("Fredrik") && account.getPassword().equals("hej")) {
-//            return "urlshortener";
-//        }
-//
-//        return "loginFail";
-//    }
-
 }

@@ -17,6 +17,8 @@ import com.google.api.services.urlshortener.UrlshortenerScopes;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,6 +62,11 @@ public class MyUrlController {
     public String create( MyUrl myUrl) {
 
         MyUrl tmpUrl = myUrl;
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String currentUser = auth.getName();
+
+        tmpUrl.setAccountUsername(currentUser);
 
         try {
             tmpUrl.setShortened(getShortUrl(tmpUrl.getOriginal()));

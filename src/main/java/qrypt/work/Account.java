@@ -7,11 +7,10 @@ import java.io.Serializable;
 @Table(name = "account")
 public class Account implements Serializable{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
+    @Id
     private String username;
+
     private String password;
 
     public Account() {
@@ -25,15 +24,10 @@ public class Account implements Serializable{
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", username=" + username + ", password=" + password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        return "Account{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 
     public String getUsername() {
