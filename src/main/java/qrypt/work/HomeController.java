@@ -24,7 +24,6 @@ public class HomeController {
 
     @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
     String home(Model model) {
-        model.addAttribute("myurl", new MyUrl());
         return "home";
     }
 

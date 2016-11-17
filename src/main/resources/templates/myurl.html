@@ -2,47 +2,91 @@
 <!--suppress ThymeleafVariablesResolveInspection -->
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8" />
-    <title>Blog</title>
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Shorten urls</title>
+    </head>
 
-<body>
-<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-<p>Shorten your url here!
-</p>
-<!--/*@thymesVar id="urlshortener" type="qrypt.work.MyUrl"*/-->
-<form action="#" th:action="@{/myurl/create}" th:object="${myurl}" method="post">
-    <p>Url: <input type="text" th:field="*{original}" /></p>
-    <p><input type="submit" value="Get shortened url" /> <input type="reset" value="Reset" /></p>
-</form>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
-Your shortened urls:
+    <style>
+        .myButton {
+            -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+            -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+            box-shadow:inset 0px 1px 0px 0px #ffffff;
+            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f9f9f9), color-stop(1, #e3dfe3));
+            background:-moz-linear-gradient(top, #f9f9f9 5%, #e3dfe3 100%);
+            background:-webkit-linear-gradient(top, #f9f9f9 5%, #e3dfe3 100%);
+            background:-o-linear-gradient(top, #f9f9f9 5%, #e3dfe3 100%);
+            background:-ms-linear-gradient(top, #f9f9f9 5%, #e3dfe3 100%);
+            background:linear-gradient(to bottom, #f9f9f9 5%, #e3dfe3 100%);
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#e3dfe3',GradientType=0);
+            background-color:#f9f9f9;
+            -moz-border-radius:6px;
+            -webkit-border-radius:6px;
+            border-radius:6px;
+            border:1px solid #5c5a5c;
+            display:inline-block;
+            cursor:pointer;
+            color:#666666;
+            font-family:Arial;
+            font-size:15px;
+            font-weight:bold;
+            padding:6px 24px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #ffffff;
+        }
+        .myButton:hover {
+            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #e3dfe3), color-stop(1, #f9f9f9));
+            background:-moz-linear-gradient(top, #e3dfe3 5%, #f9f9f9 100%);
+            background:-webkit-linear-gradient(top, #e3dfe3 5%, #f9f9f9 100%);
+            background:-o-linear-gradient(top, #e3dfe3 5%, #f9f9f9 100%);
+            background:-ms-linear-gradient(top, #e3dfe3 5%, #f9f9f9 100%);
+            background:linear-gradient(to bottom, #e3dfe3 5%, #f9f9f9 100%);
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#e3dfe3', endColorstr='#f9f9f9',GradientType=0);
+            background-color:#e3dfe3;
+        }
+        .myButton:active{
+            position:relative;
+            top:1px;
+        }
+    </style>
 
-<div th:if="${not #lists.isEmpty(myurllist)}">
-    <h2>Url list</h2>
-    <table class="table table-striped">
-        <tr>
-            <th>Id</th>
-            <th>Original</th>
-            <th>Shortened</th>
-        </tr>
-        <tr th:each="myurllist : ${myurllist}">
-            <form action="#" th:action="@{/myurl/remove}" th:object="${myurl}" method="post">
 
-                <td th:text="${myurllist.id}"></td>
-                <td th:text="${myurllist.original}"></td>
-                <td th:text="${myurllist.shortened}"></td>
 
-                <td><input type="hidden" th:value="${myurllist.id}" name="urlId"/><button type="submit" class="removebutton">Remove</button></td>
-                <!--<td th:if="${#fields.hasErrors('urlId')}" th:errors="*{urlId}">IP Error</td>-->
-            </form>
-        </tr>
-    </table>
-</div>
+    <body>
+        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+        <p>Shorten your url here!
+        </p>
+        <!--/*@thymesVar id="urlshortener" type="qrypt.work.MyUrl"*/-->
+        <form action="#" th:action="@{/myurl/create}" th:object="${myurl}" method="post">
+            <p>Url: <input type="text" th:field="*{original}" /></p>
+            <p><input type="submit" value="Get shortened url" class="myButton"/> <input type="reset" value="Reset" class="myButton"/></p>
+        </form>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out" class="myButton"/>
+        </form>
 
-</body>
+        <div th:if="${not #lists.isEmpty(myurllist)}">
+            <h2>Your shortened urls</h2>
+            <table class="table table-striped">
+                <tr>
+                    <th>Id</th>
+                    <th>Original</th>
+                    <th>Shortened</th>
+                </tr>
+                <tr th:each="myurllist : ${myurllist}">
+                    <form action="#" th:action="@{/myurl/remove}" th:object="${myurl}" method="post">
+
+                        <td th:text="${myurllist.id}"></td>
+                        <td th:text="${myurllist.original}"></td>
+                        <td ><a th:text="${myurllist.shortened}" th:href="@{|${myurllist.shortened}|}"></a></td>
+
+                        <td><input type="hidden" th:value="${myurllist.id}" name="urlId"/><button type="submit" class="removebutton">Remove</button></td>
+                        <!--<td th:if="${#fields.hasErrors('urlId')}" th:errors="*{urlId}">IP Error</td>-->
+                    </form>
+                </tr>
+            </table>
+        </div>
+
+    </body>
 
 </html>
