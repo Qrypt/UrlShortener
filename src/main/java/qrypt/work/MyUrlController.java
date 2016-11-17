@@ -20,8 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -78,6 +81,12 @@ public class MyUrlController {
         return "redirect:/myurl";
     }
 
+    @RequestMapping(value = "/remove", method = RequestMethod.POST, params = {"urlId"})
+    public String remove( @RequestParam(value = "urlId") Long myUrlid) {
+        myUrlRepository.delete(myUrlid);
+        return "redirect:/myurl";
+    }
+
     private String getShortUrl(String longUrl) throws IOException {
         URL url = new URL("https://www.googleapis.com/urlshortener/v1/url?key=" + GOOGLE_API_KEY);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -116,33 +125,4 @@ public class MyUrlController {
 
         return shortUrl;
     }
-
-//    @RequestMapping(value = "/urlshortener", method = RequestMethod.GET)
-//    public String myUrlForm(Model model) {
-//        model.addAttribute("urlshortener", new MyUrl());
-//        return "myurl";
-//    }
-
-//    @RequestMapping(value = "/myurl", method = RequestMethod.GET)
-//    public String urlForm(Model model) {
-//        model.addAttribute("urlshortener", new MyUrl());
-//        return "myurl";
-//    }
-
-//
-//    @PostMapping("/urlshortener")
-//    public String urlSubmit(@ModelAttribute MyUrl myUrl) {
-//
-//        String urlOriginal = myUrl.getOriginal();
-//
-//        try {
-//            ArrayList<String> urls = test(urlOriginal);
-//            System.out.println();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return "urlshortener";
-//    }
-//
 }

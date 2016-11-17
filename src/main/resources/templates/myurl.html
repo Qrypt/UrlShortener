@@ -26,9 +26,15 @@ Shortened url:
             <th>Shortened</th>
         </tr>
         <tr th:each="myurllist : ${myurllist}">
-            <td th:text="${myurllist.id}"></td>
-            <td th:text="${myurllist.original}"></td>
-            <td th:text="${myurllist.shortened}"></td>
+            <form action="#" th:action="@{/myurl/remove}" th:object="${myurl}" method="post">
+
+                <td th:text="${myurllist.id}"></td>
+                <td th:text="${myurllist.original}"></td>
+                <td th:text="${myurllist.shortened}"></td>
+
+                <td><input type="hidden" th:value="${myurllist.id}" name="urlId"/><button type="submit" class="removebutton">Remove</button></td>
+                <!--<td th:if="${#fields.hasErrors('urlId')}" th:errors="*{urlId}">IP Error</td>-->
+            </form>
         </tr>
     </table>
 </div>
