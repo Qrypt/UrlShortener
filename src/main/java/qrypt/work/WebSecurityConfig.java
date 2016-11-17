@@ -43,10 +43,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
-                .loginPage("/login")
+                .loginPage("/login").defaultSuccessUrl("/myurl")
                 .permitAll()
                 .and()
-            .logout()
+            .logout().logoutSuccessUrl("/home")
                 .permitAll();
     }
 
@@ -54,16 +54,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource())
-//                .usersByUsernameQuery("select id, username, password from account where username=?")
                 .usersByUsernameQuery("select username, password, 'TRUE' from account where username=?")
                 //Dummy query...Har inga roller.
                 .authoritiesByUsernameQuery("select username, 'ROLE_USER' from account where username=?");
     }
-
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth
-//                .inMemoryAuthentication()
-//                .withUser("Fredrik").password("hej").roles("USER");
-//    }
 }

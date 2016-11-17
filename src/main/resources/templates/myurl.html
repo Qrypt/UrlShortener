@@ -8,14 +8,18 @@
 </head>
 
 <body>
-<h1>Shorten your URL</h1>
+<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+<p>Shorten your url here!
+</p>
 <!--/*@thymesVar id="urlshortener" type="qrypt.work.MyUrl"*/-->
 <form action="#" th:action="@{/myurl/create}" th:object="${myurl}" method="post">
     <p>Url: <input type="text" th:field="*{original}" /></p>
     <p><input type="submit" value="Get shortened url" /> <input type="reset" value="Reset" /></p>
 </form>
-
-Shortened url:
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+Your shortened urls:
 
 <div th:if="${not #lists.isEmpty(myurllist)}">
     <h2>Url list</h2>

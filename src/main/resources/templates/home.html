@@ -7,12 +7,14 @@
 </head>
 
 <body>
-<h1>Welcome to Spring MVC</h1>
+<h1>Welcome to Url Shortener</h1>
 Now is: <b th:text="${execInfo.now.time}"></b>
 
-<p>Click <a th:href="@{/welcome}">here</a> to see a greeting.</p>
-<p>Click <a th:href="@{/account}">here</a> to create an account.</p>
-<p>Click <a th:href="@{/myurl}">here</a> to create an url.</p>
+<p>
+    <a th:href="@{/login}">Login</a>
+    <a th:href="@{/account}">Register</a>
+</p>
+
 </body>
 
 </html>
