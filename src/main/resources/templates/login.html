@@ -55,10 +55,6 @@
         <div th:if="${param.error}">
             Invalid username or password. Not <a th:href="@{/account}">registered?</a>
         </div>
-        <!--/*@thymesVar id="param" type="qrypt.work"*/-->
-        <div th:if="${param.logout}">
-            You have been logged out.
-        </div>
 
         <form th:action="@{/login}" method="post">
             <p><div><label> Username: <input type="text" name="username"/> </label></div></p>

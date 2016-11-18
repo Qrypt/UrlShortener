@@ -1,5 +1,7 @@
 package qrypt.work;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -9,8 +11,10 @@ public class Account implements Serializable{
 
 
     @Id
+    @Column(nullable = false)
     private String username;
 
+    @Column(nullable = false)
     private String password;
 
     public Account() {

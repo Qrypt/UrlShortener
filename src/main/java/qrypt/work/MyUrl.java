@@ -1,5 +1,7 @@
 package qrypt.work;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -10,8 +12,13 @@ public class MyUrl implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false)
     private String original;
+
+    @Column(nullable = false)
     private String shortened;
+
+    @Column(nullable = false)
     private String accountUsername;
 
     public MyUrl() {
