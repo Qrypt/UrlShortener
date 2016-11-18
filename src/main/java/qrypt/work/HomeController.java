@@ -11,14 +11,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping(value = "/")
 public class HomeController {
-    private AccountRepository accountRepository;
     private MyUrlRepository myUrlRepository;
 
 
-    //går detta att göra lokalt i AccountController resp. MyUrlController?
     @Autowired
-    public HomeController(AccountRepository accountRepository, MyUrlRepository myUrlRepository) {
-        this.accountRepository = accountRepository;
+    public HomeController(MyUrlRepository myUrlRepository) {
         this.myUrlRepository = myUrlRepository;
     }
 

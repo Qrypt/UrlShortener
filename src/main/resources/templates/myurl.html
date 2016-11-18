@@ -80,7 +80,6 @@
                         <td ><a th:text="${myurllist.shortened}" th:href="@{|${myurllist.shortened}|}"></a></td>
 
                         <td><input type="hidden" th:value="${myurllist.id}" name="urlId"/><button type="submit" class="removebutton">Remove</button></td>
-                        <!--<td th:if="${#fields.hasErrors('urlId')}" th:errors="*{urlId}">IP Error</td>-->
                     </form>
                 </tr>
             </table>
