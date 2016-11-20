@@ -8,20 +8,27 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.Collections;
+import java.util.List;
+
 @Controller
 @RequestMapping(value = "/")
 public class HomeController {
     private MyUrlRepository myUrlRepository;
-
 
     @Autowired
     public HomeController(MyUrlRepository myUrlRepository) {
         this.myUrlRepository = myUrlRepository;
     }
 
-    @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/","/home"}, method = RequestMethod.GET)
     String home(Model model) {
         return "home";
+    }
+
+    @RequestMapping(value = {"/myurl/go", }, method = RequestMethod.GET)
+    public String home() {
+        return "myurl/go";
     }
 
     @RequestMapping(value = "/login")
@@ -35,9 +42,6 @@ public class HomeController {
         return "welcome";
     }
 
-
-
-    //Gör det möjlig att göra anrop mot Account-objekt i account.html
     @RequestMapping(value = "/account", method = RequestMethod.GET)
     public String accountForm(Model model) {
         model.addAttribute("account", new Account());
@@ -50,7 +54,11 @@ public class HomeController {
         String currentUser = auth.getName();
 
         model.addAttribute("myurl", new MyUrl());
-        model.addAttribute("myurllist", myUrlRepository.findByAccountUsername(currentUser));
+
+        List<MyUrl> myUrlList = myUrlRepository.findByAccountUsername(currentUser);
+        Collections.sort(myUrlList, (o1, o2) -> o1.getId().compareTo(o2.getId()));
+
+        model.addAttribute("myurllist", myUrlList);
 
         return "myurl";
     }

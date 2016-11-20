@@ -10,4 +10,5 @@ public interface MyUrlRepository extends JpaRepository<MyUrl, Long>{
 
     MyUrl findById(Long id);
     List<MyUrl> findByAccountUsername(String username);
+    MyUrl findByShortened(String shortened);
 }

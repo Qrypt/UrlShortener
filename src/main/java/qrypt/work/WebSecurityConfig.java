@@ -18,7 +18,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/", "/home", "/account", "/account/*").permitAll()
+                .antMatchers("/", "/home", "/account", "/account/*", "/myurl/go/*", "/error/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource.dataSource())
                 .usersByUsernameQuery("select username, password, 'TRUE' from account where username=?")
-                //Dummy query...Har inga roller.
                 .authoritiesByUsernameQuery("select username, 'ROLE_USER' from account where username=?");
+     
     }
 }

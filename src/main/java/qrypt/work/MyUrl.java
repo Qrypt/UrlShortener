@@ -13,7 +13,7 @@ public class MyUrl implements Serializable {
     @Column(nullable = false)
     private String original;
 
-    @Column(nullable = false)
+    @Column
     private String shortened;
 
     @Column(nullable = false)

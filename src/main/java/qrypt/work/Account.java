@@ -1,5 +1,6 @@
 package qrypt.work;
 
+import javax.jdo.annotations.Unique;
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -10,6 +11,7 @@ public class Account implements Serializable{
 
     @Id
     @Column(nullable = false)
+    @Unique
     private String username;
 
     @Column(nullable = false)

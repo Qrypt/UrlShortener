@@ -2,6 +2,7 @@ package qrypt.work;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,8 +28,23 @@ public class AccountController {
     }
 
     @RequestMapping(value = ("/create"), method = RequestMethod.POST)
-    public String create(Account account) {
-        accountRepository.save(account);
-        return "home";
+    public String create(Model model, Account account) {
+
+        if(accountRepository.findByUsername(account.getUsername()) != null) {
+            model.addAttribute("message", "User already exists");
+            return "account";
+        }
+        if(account.getUsername().equals("")) {
+            model.addAttribute("message", "A username must be added");
+            return "account";
+        }
+        if(account.getPassword().equals("")) {
+            model.addAttribute("message", "A password must be added");
+            return "account";
+        }
+        else {
+            accountRepository.save(account);
+            return "home";
+        }
     }
 }

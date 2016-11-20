@@ -77,7 +77,9 @@
 
                         <td th:text="${myurllist.id}"></td>
                         <td th:text="${myurllist.original}"></td>
-                        <td ><a th:text="${myurllist.shortened}" th:href="@{|${myurllist.shortened}|}"></a></td>
+
+                        <!-- Hämta BASE_URL från någon controller? -->
+                        <td ><a th:text="|https://qrypt-url-shortener.herokuapp.com/myurl/go/${myurllist.shortened}|" th:href="@{|${myurllist.original}|}"></a></td>
 
                         <td><input type="hidden" th:value="${myurllist.id}" name="urlId"/><button type="submit" class="removebutton">Remove</button></td>
                     </form>

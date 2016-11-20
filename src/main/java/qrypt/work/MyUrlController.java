@@ -1,30 +1,18 @@
 package qrypt.work;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
+
+import java.nio.ByteBuffer;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
 @RequestMapping(value = "/myurl")
 public class MyUrlController {
-    /*
-    Connect url för förkortning av url:
-
-    https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyDnLjS_ypgz3omGtT3VKRBYGZKNl0XIf3E
-     */
-
-    private final String GOOGLE_API_KEY = "AIzaSyDnLjS_ypgz3omGtT3VKRBYGZKNl0XIf3E";
-
     private MyUrlRepository myUrlRepository;
 
     @Autowired
@@ -43,23 +31,42 @@ public class MyUrlController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create( MyUrl myUrl) {
-
-        MyUrl tmpUrl = myUrl;
-
+    public String create(MyUrl myUrl) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String currentUser = auth.getName();
 
-        tmpUrl.setAccountUsername(currentUser);
+        MyUrl tmpUrl = myUrl;
 
-        try {
-            tmpUrl.setShortened(getShortUrl(tmpUrl.getOriginal()));
-        } catch (IOException e) {
-            e.printStackTrace();
+        boolean httpCheck = tmpUrl.getOriginal().startsWith("http://");
+        boolean httpsCheck = tmpUrl.getOriginal().startsWith("https://");
+        StringBuilder possibleProtocol = new StringBuilder(tmpUrl.getOriginal());
+        if(!httpCheck && !httpsCheck) {
+            possibleProtocol.insert(0, "http://");
+            tmpUrl.setOriginal(possibleProtocol.toString());
         }
+
+        tmpUrl.setAccountUsername(currentUser);
+        tmpUrl.setShortened("temp");
+
+        myUrlRepository.save(tmpUrl);
+
+        Long id = tmpUrl.getId();
+        byte[] idAsBytes = longToBytes(id);
+        String encodedId = Base64.getUrlEncoder().encodeToString(idAsBytes);
+        tmpUrl.setShortened(encodedId);
 
         myUrlRepository.save(tmpUrl);
         return "redirect:/myurl";
+    }
+
+    @RequestMapping(value = ("/go/{shorturl}"), method = RequestMethod.GET)
+    public String gotToUrl(@PathVariable("shorturl") String shorturl) {
+        MyUrl tmpUrl = myUrlRepository.findByShortened(shorturl);
+
+        if(tmpUrl == null) {
+            return "redirect:/error/url";
+        }
+        return "redirect:" + tmpUrl.getOriginal();
     }
 
     @RequestMapping(value = "/remove", method = RequestMethod.POST, params = {"urlId"})
@@ -68,42 +75,24 @@ public class MyUrlController {
         return "redirect:/myurl";
     }
 
-    private String getShortUrl(String longUrl) throws IOException {
-        URL url = new URL("https://www.googleapis.com/urlshortener/v1/url?key=" + GOOGLE_API_KEY);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-
-        con.setDoInput(true);
-        con.setDoOutput(true);
-        con.setRequestProperty("Content-type", "application/json");
-        con.setRequestProperty("Accept", "application/json");
-        con.setRequestMethod("POST");
-
-        JSONObject urlData = new JSONObject();
-
-        urlData.put("longUrl", longUrl);
-
-        OutputStreamWriter writer =  new OutputStreamWriter(con.getOutputStream());
-        writer.write(urlData.toString());
-        writer.flush();
-
-
-        StringBuilder sb = new StringBuilder();
-        int HttpResult = con.getResponseCode();
-        if(HttpResult == HttpURLConnection.HTTP_OK) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
-
-            String line;
-            while((line = reader.readLine()) != null) {
-                sb.append(line);
-            }
-            reader.close();
+    private byte[] longToBytes(long x) {
+        ByteBuffer buffer;
+        if(x < Byte.MAX_VALUE) {
+            buffer = ByteBuffer.allocate(Byte.BYTES);
+            buffer.put((byte) x);
         }
-
-        JSONObject urlResponse = new JSONObject(sb.toString());
-        String shortUrl = urlResponse.get("id").toString();
-
-        System.out.println("SHORT URL: " + shortUrl);
-
-        return shortUrl;
+        else if(x < Short.MAX_VALUE) {
+            buffer = ByteBuffer.allocate(Short.BYTES);
+            buffer.putShort((short) x);
+        }
+        else if(x < Integer.MAX_VALUE) {
+            buffer = ByteBuffer.allocate(Integer.BYTES);
+            buffer.putInt((int) x);
+        }
+        else {
+            buffer = ByteBuffer.allocate(Long.BYTES);
+            buffer.putLong(x);
+        }
+        return buffer.array();
     }
 }
