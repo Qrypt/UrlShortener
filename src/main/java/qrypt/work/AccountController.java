@@ -17,16 +17,6 @@ public class AccountController {
         this.accountRepository = accountRepository;
     }
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public @ResponseBody List<Account> getAll() {
-        return accountRepository.findAll();
-    }
-
-    @RequestMapping(value = "/finduser/{username}", method = RequestMethod.GET)
-    public @ResponseBody Account findByUserName(@PathVariable("username") String username) {
-        return accountRepository.findByUsername(username);
-    }
-
     @RequestMapping(value = ("/create"), method = RequestMethod.POST)
     public String create(Model model, Account account) {
 

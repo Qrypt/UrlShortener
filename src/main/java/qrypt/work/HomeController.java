@@ -22,12 +22,12 @@ public class HomeController {
     }
 
     @RequestMapping(value = {"/","/home"}, method = RequestMethod.GET)
-    String home(Model model) {
+    String home() {
         return "home";
     }
 
     @RequestMapping(value = {"/myurl/go", }, method = RequestMethod.GET)
-    public String home() {
+    public String goToUrl() {
         return "myurl/go";
     }
 
